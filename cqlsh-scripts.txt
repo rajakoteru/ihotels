@@ -1,0 +1,200 @@
+DROP KEYSPACE cqlhotels;
+
+CREATE KEYSPACE cqlhotels WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
+
+ALTER KEYSPACE cqlhotels WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
+
+USE cqlhotels;
+
+SELECT * FROM system.schema_keyspaces;
+
+CREATE TABLE content (
+  ckey   text PRIMARY KEY
+);
+
+ALTER TABLE content add byh text;
+
+ALTER TABLE content add dst text;
+
+ALTER TABLE content add cid text;
+
+ALTER TABLE content add cod text;
+
+ALTER TABLE content add nor text;
+
+ALTER TABLE content add nog text;
+
+INSERT INTO content (ckey,byh) VALUES('mainpage','Book Your Hotel');
+
+INSERT INTO content (ckey,dst) VALUES('mainpage','Destination');
+
+INSERT INTO content (ckey,cid) VALUES('mainpage','Check In Date');
+
+INSERT INTO content (ckey,cod) VALUES('mainpage','Check Out Date');
+
+INSERT INTO content (ckey,nor) VALUES('mainpage','Rooms');
+
+INSERT INTO content (ckey,nog) VALUES('mainpage','Guests');
+
+INSERT INTO content (ckey,byh) VALUES('mainpage-es','Reserve su hotel');
+
+INSERT INTO content (ckey,dst) VALUES('mainpage-es','Destino');
+
+INSERT INTO content (ckey,cid) VALUES('mainpage-es','Llegada Fecha');
+
+INSERT INTO content (ckey,cod) VALUES('mainpage-es','Fecha de Salida');
+
+INSERT INTO content (ckey,nor) VALUES('mainpage-es','Habitaciones');
+
+INSERT INTO content (ckey,nog) VALUES('mainpage-es','Huéspedes');
+
+////////////////////////////////////////////////////////////////////////////////
+
+CREATE TABLE hotelsbycity(
+  destination varchar PRIMARY KEY,
+  hcount varchar,
+  hids   varchar
+);
+
+INSERT INTO hotelsbycity(destination, hcount, hids) VALUES('BLR-IN','20','100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120');
+
+INSERT INTO hotelsbycity(destination, count, hids) VALUES('DL-IN','20','200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220');
+
+INSERT INTO hotelsbycity(destination, hcount, hids) VALUES('DFW-USA','20','300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320');
+
+INSERT INTO hotelsbycity(destination, hcount, hids) VALUES('NY-USA','20','400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420');
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CREATE TABLE hoteldetails(
+  id varchar PRIMARY KEY,
+  name text,
+  address text,
+  poi list<text>,
+  emails set<text>,
+  room_rate map<text, text>,
+  rooms list<text>
+);
+
+ALTER TABLE hoteldetails add state text;
+
+INSERT INTO hoteldetails (id, poi) VALUES('1000', ['LalBagh' , 'Metro Rail']);
+
+INSERT INTO hoteldetails (id, emails) VALUES('1000', {'tulasig@gmail.com', 'tulasig@yahoo.com'});
+
+INSERT INTO hoteldetails (id, room_rate) VALUES('1000', {'R1' : '100 USD',  'R2' : '200 USD', 'R3' : '250 USD'});
+
+INSERT INTO hoteldetails (id, name, address, emails, room_rate, rooms)
+VALUES ('1000', 'TEST HOTEL', '30 JP Nagar 5 Phase Bangalore', 
+{'tulasig@gmail.com', 'tulasig@sabre.com'}, 
+{'R1' : '100 USD',  'R2' : '200 USD', 'R3' : '250 USD'},
+['R1', 'R2', 'R3']
+);
+
+INSERT INTO hoteldetails (id, name, address, emails, room_rate, rooms)
+VALUES ('2000', 'TEST HOTEL', '30 JP Nagar 5 Phase Bangalore', 
+{'tulasig@gmail.com', 'tulasig@sabre.com'}, 
+{'R1' : '100 USD',  'R2' : '200 USD', 'R3' : '250 USD'},
+['R1', 'R2', 'R3']
+);
+
+INSERT INTO hoteldetails (id, name, address, emails, room_rate, rooms)
+VALUES ('3000', 'TEST HOTEL', '30 JP Nagar 5 Phase Bangalore', 
+{'tulasig@gmail.com', 'tulasig@sabre.com'}, 
+{'R1' : '100 USD',  'R2' : '200 USD', 'R3' : '250 USD'},
+['R1', 'R2', 'R3']
+);
+
+INSERT INTO hoteldetails (id, name, address, emails, room_rate, rooms)
+VALUES ('4000', 'TEST HOTEL', '30 JP Nagar 5 Phase Bangalore', 
+{'tulasig@gmail.com', 'tulasig@sabre.com'}, 
+{'R1' : '100 USD',  'R2' : '200 USD', 'R3' : '250 USD'},
+['R1', 'R2', 'R3']
+);
+
+INSERT INTO hoteldetails (id, name, address, emails, room_rate, rooms)
+VALUES ('5000', 'TEST HOTEL', '30 JP Nagar 5 Phase Bangalore', 
+{'tulasig@gmail.com', 'tulasig@sabre.com'}, 
+{'R1' : '100 USD',  'R2' : '200 USD', 'R3' : '250 USD'},
+['R1', 'R2', 'R3']
+);
+
+////////////////////////////////////////////////////////////////////////////////
+
+UPDATE hoteldetails SET name = 'New Name Hotel' where id = '1000';
+
+UPDATE hoteldetails SET emails = emails + {'new@new.com'} WHERE id = '1000';
+
+UPDATE hoteldetails SET emails = emails + {'new@new.com'} WHERE id = '1000';
+
+UPDATE hoteldetails SET rooms = rooms + ['R4'] WHERE id = '1000';
+
+UPDATE hoteldetails SET rooms = rooms + ['R4', 'R5'] WHERE id = '1000';
+
+UPDATE hoteldetails SET room_rate = room_rate + {'R6' : '900 USD'} WHERE id = '1000';
+
+UPDATE hoteldetails SET state = 'KA' WHERE id = '1000';
+UPDATE hoteldetails SET state = 'KA' WHERE id = '2000';
+
+UPDATE hoteldetails SET state = 'TN' WHERE id = '3000';
+UPDATE hoteldetails SET state = 'TN' WHERE id = '4000';
+
+UPDATE hoteldetails SET state = 'UP' WHERE id = '5000';
+
+////////////////////////////////////////////////////////////////////////////////
+
+SELECT * FROM hoteldetails;
+
+SELECT * FROM hoteldetails WHERE id = '1000';
+
+SELECT COUNT(*) FROM hoteldetails;
+
+SELECT * FROM hoteldetails LIMIT 1;
+
+SELECT * FROM hoteldetails WHERE token(id) >= TOKEN('1000') AND token(id) < TOKEN('3000') LIMIT 10 ALLOW FILTERING;
+  
+////////////////////////////////////////////////////////////////////////////////
+
+CREATE INDEX ON hoteldetails(state);
+
+SELECT * FROM hoteldetails where state = 'KA';
+
+////////////////////////////////////////////////////////////////////////////////
+
+BEGIN BATCH
+
+  INSERT INTO hoteldetails (id, poi) VALUES('5000', ['LalBagh' , 'Metro Rail']);
+  
+  UPDATE hoteldetails SET rooms = rooms + ['R4', 'R5'] WHERE id = '5000';
+  
+  DELETE rooms FROM hoteldetails WHERE id = '1000'
+  
+APPLY BATCH;
+
+////////////////////////////////////////////////////////////////////////////////
+
+CREATE TABLE "HotelViews" (id text PRIMARY KEY, countViews counter);
+
+UPDATE "HotelViews" SET countViews =  countViews + 1 where id = '1000';
+
+UPDATE "HotelViews" SET countViews =  countViews + 9 where id = '1000';
+
+UPDATE "HotelViews" SET countViews =  countViews - 5 where id = '1000';
+
+////////////////////////////////////////////////////////////////////////////////
+
+DELETE poi, rooms, room_rate FROM hoteldetails WHERE id = '1000';
+
+DELETE FROM hoteldetails WHERE id = '1000';
+
+DELETE rooms ['R1'] FROM hoteldetails WHERE id = '1000';
+
+DELETE room_rate ['R1'] FROM hoteldetails WHERE id = '1000';
+
+DELETE rooms[1] FROM hoteldetails WHERE id = '1000';
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
